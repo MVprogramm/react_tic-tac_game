@@ -10,19 +10,17 @@ function calculateWinner(squares) {
     [2, 4, 6],
   ];
 
-  const result = lines.filter(line => {
+  return lines.reduce((acc, line) => {
     const [a, b, c] = line;
-  
-    return (
-        squares[a] && 
-        squares[a] === squares[b] && 
-        squares[a] === squares[c]
-    );
-  });
 
-  return result.length != 0 
-    ? squares[result[0][0]]
-    : null;
+    if (
+      squares[a] && 
+      squares[a] === squares[b] && 
+      squares[a] === squares[c]
+    ) acc = squares[a];
+    
+    return acc;
+  }, null);
 };
 
 

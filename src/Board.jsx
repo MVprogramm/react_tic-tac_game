@@ -3,74 +3,35 @@ import Square from './Square.jsx';
 import calculateWinner from './calculateWinner.js';
 import './board.scss';
 
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state ={
-      squares: Array(9).fill(null),
-      xIsNext: true,
-    }
-  }
-  
-
-  handleClick(i) {
-    const squares = this.state.squares.slice();
-
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    };
+const Board = (props) => {
+  const { squares, onClick } = props;
     
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-
-    this.setState({
-      squares,
-      xIsNext: !this.state.xIsNext,
-    });
-
-    
-  }
-
-  renderSquare(i) {
-    return (
+  function renderSquare(i) {
+    const boardLine = [i, ++i, ++i].map((num) => 
       <Square 
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
+        key={num}
+        value={squares[num]}
+        onClick={() => onClick(num)}
       />
     );
+    
+    return boardLine;
   }
 
-  render() {
-    const winner = calculateWinner(this.state.squares);
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      status = 'Next player: ' + 
-        (this.state.xIsNext ? 'X' : 'O');
-    };
-
-    return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
+  const board = [0, 3, 6].map((num) => 
+    <div 
+      key={num}
+      className="board-row"
+    >
+      { renderSquare(num) }
+    </div>
+  );
+   
+  return (
+    <div>
+      {board}
+    </div>
+  );
 };
 
 export default Board;
